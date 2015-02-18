@@ -7,7 +7,7 @@ import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 import jssc.SerialPortList;
 
-
+/// This is a test for git push
 public class Java_testjSSC {
 
     static SerialPort serialPort;
