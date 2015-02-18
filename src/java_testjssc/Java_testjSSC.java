@@ -6,12 +6,14 @@ import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 import jssc.SerialPortList;
+import java.util.Scanner;
 
 /// This is a test for git push
 public class Java_testjSSC {
 
     static SerialPort serialPort;
     static int count=0;
+    static Scanner keyboard = new Scanner(System.in);
     
     public static void main(String[] args) {
         
@@ -24,18 +26,18 @@ public class Java_testjSSC {
             System.exit(1);
         }
         
-        serialPort = new SerialPort(port);
-        try {
-            System.out.println("Port opened: " + serialPort.openPort());
-            System.out.println("Params Set: " + serialPort.setParams(9600, 8, 1, 0));
-            int mask = SerialPort.MASK_RXCHAR + SerialPort.MASK_CTS + SerialPort.MASK_DSR;//Prepare mask
-            serialPort.setEventsMask(mask);//Set mask
-            serialPort.addEventListener(new SerialPortReader());//Add SerialPortEventListener
-        }
-        catch (SerialPortException ex){
-            System.out.println(ex);
-        }
-        
+//        serialPort = new SerialPort(port);
+//        try {
+//            System.out.println("Port opened: " + serialPort.openPort());
+//            System.out.println("Params Set: " + serialPort.setParams(9600, 8, 1, 0));
+//            int mask = SerialPort.MASK_RXCHAR + SerialPort.MASK_CTS + SerialPort.MASK_DSR;//Prepare mask
+//            serialPort.setEventsMask(mask);//Set mask
+//            serialPort.addEventListener(new SerialPortReader());//Add SerialPortEventListener
+//        }
+//        catch (SerialPortException ex){
+//            System.out.println(ex);
+//        }
+//        
         //for (int i=0; i<100; i++){
         //    writeToPort(serialPort, "O");
         //    writeToPort(serialPort, "F");
@@ -48,6 +50,7 @@ public class Java_testjSSC {
         
       //  closePort(serialPort);
     }
+    
     static class SerialPortReader implements SerialPortEventListener {
 
         @Override
@@ -107,13 +110,20 @@ public class Java_testjSSC {
         /* Port Discovery */
         
         String[] portNames = SerialPortList.getPortNames();
+        int port = 0;
+        
         for (String portName : portNames) {
-            System.out.println("Found port: " + portName);
+            System.out.println("Found port (" + port + ") " + portName);
+        }
+        System.out.println("PortNames.length = " + port);
+        if (portNames.length > 1){
+            System.out.println("Select the port you would like to use (default 0:");
+            port = keyboard.nextInt();
         }
         if (portNames.length == 0){
             return "exit";
         }
-        else return portNames[0];
+        else return portNames[port];
     }
     
     private static boolean writeToPort(SerialPort serialPort, String message){
